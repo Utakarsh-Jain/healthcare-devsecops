@@ -1,0 +1,13 @@
+{
+  "name": "healthcare-devsecops",
+  "version": "1.0.0",
+  "description": "Secure healthcare demo application for DevSecOps",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
