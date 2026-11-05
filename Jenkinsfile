@@ -39,6 +39,17 @@ pipeline {
                 sh 'trivy image --severity HIGH,CRITICAL healthcare-devsecops:v2'
             }
         }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                withEnv(['KUBECONFIG=/var/lib/jenkins/.kube/config']) {
+                    sh 'kubectl apply -f deployment.yaml -f service.yaml'
+                    sh 'kubectl rollout status deployment/healthcare-app --timeout=120s'
+                    sh 'kubectl get pods'
+                    sh 'kubectl get services'
+                }
+            }
+        }
     }
 
     post {
