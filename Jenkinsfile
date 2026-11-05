@@ -18,8 +18,6 @@ pipeline {
 
         stage('SAST - SonarQube') {
             steps {
-                echo 'Starting SonarQube analysis'
-
                 script {
                     def scannerHome = tool 'SonarScanner'
 
@@ -27,6 +25,18 @@ pipeline {
                         sh "${scannerHome}/bin/sonar-scanner"
                     }
                 }
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                sh 'docker build -t healthcare-devsecops:v2 .'
+            }
+        }
+
+        stage('Trivy Security Scan') {
+            steps {
+                sh 'trivy image --severity HIGH,CRITICAL healthcare-devsecops:v2'
             }
         }
     }
